@@ -92,4 +92,20 @@ public class OrderController {
         orderService.updateById(orders);
         return R.success("修改订单状态成功");
     }
+
+    @PostMapping("/again")
+    public R<String> again(@RequestBody Orders orders) {
+        Long ordersId = orders.getId();
+        Orders orders0 = orderService.getById(ordersId);
+        LambdaQueryWrapper<OrderDetail> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderDetail::getOrderId, ordersId);
+        List<OrderDetail> list = orderDetailService.list(wrapper);
+        OrdersDto ordersDto = new OrdersDto();
+        BeanUtils.copyProperties(orders0, ordersDto);
+        ordersDto.setOrderDetails(list);
+/*
+        return R.success(ordersDto);
+*/
+        return null;
+    }
 }

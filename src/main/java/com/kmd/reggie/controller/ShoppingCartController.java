@@ -81,13 +81,14 @@ public class ShoppingCartController {
         }
         ShoppingCart one = shoppingCartService.getOne(wrapper);
         Integer number = one.getNumber();
-        if (number > 0) {
+        if (number > 1) {
             one.setNumber(number - 1);
             shoppingCartService.updateById(one);
             return R.success(one);
         } else {
+            one.setNumber(0);
             shoppingCartService.remove(wrapper);
+            return R.success(one);
         }
-        return R.success(null);
     }
 }
