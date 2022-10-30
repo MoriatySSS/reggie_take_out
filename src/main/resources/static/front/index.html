@@ -438,12 +438,15 @@
             async subtractCart(item) {
                 let params = {
                     dishId: item.id,
+                    dishFlavors: item.flavors
                 }
+                console.log(item.flavors)
                 if (!Array.isArray(item.flavors)) {
                     params = {
                         setmealId: item.id,
                     }
                 }
+                console.log(params)
                 const res = await updateCartApi(params)
                 if (res.code === 1) {
                     this.dishList.forEach(dish => {
@@ -491,10 +494,13 @@
             },
             //购物车中减少商品数量
             async cartNumberSubtract(item) {
+                console.log(item)
                 let params = {
                     dishId: item.dishId,
                     setmealId: item.setmealId,
+                    dishFlavor: item.dishFlavor
                 }
+                console.log(params)
                 const res = await updateCartApi(params)
                 if (res.code === 1) {
                     this.dishList.forEach(dish => {

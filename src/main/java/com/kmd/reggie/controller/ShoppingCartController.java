@@ -76,6 +76,7 @@ public class ShoppingCartController {
         wrapper.eq(ShoppingCart::getUserId, BaseContext.getCurrentId());
         if (shoppingCart.getDishId() != null) {
             wrapper.eq(ShoppingCart::getDishId, shoppingCart.getDishId());
+            wrapper.eq(ShoppingCart::getDishFlavor, shoppingCart.getDishFlavor());
         } else {
             wrapper.eq(ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
         }

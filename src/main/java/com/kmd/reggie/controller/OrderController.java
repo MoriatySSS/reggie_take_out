@@ -9,6 +9,7 @@ import com.kmd.reggie.entity.OrderDetail;
 import com.kmd.reggie.entity.Orders;
 import com.kmd.reggie.service.OrderDetailService;
 import com.kmd.reggie.service.OrderService;
+import com.kmd.reggie.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private OrderDetailService orderDetailService;
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @PostMapping("/submit")
     public R<String> submit(@RequestBody Orders orders) {
@@ -95,17 +98,19 @@ public class OrderController {
 
     @PostMapping("/again")
     public R<String> again(@RequestBody Orders orders) {
-        Long ordersId = orders.getId();
-        Orders orders0 = orderService.getById(ordersId);
-        LambdaQueryWrapper<OrderDetail> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(OrderDetail::getOrderId, ordersId);
-        List<OrderDetail> list = orderDetailService.list(wrapper);
-        OrdersDto ordersDto = new OrdersDto();
-        BeanUtils.copyProperties(orders0, ordersDto);
-        ordersDto.setOrderDetails(list);
-/*
-        return R.success(ordersDto);
-*/
-        return null;
+        shoppingCartService.again(orders);
+        /*Long ordersId = orders.getId();
+        LambdaQueryWrapper<OrderDetail> detailWrapper = new LambdaQueryWrapper<>();
+        detailWrapper.eq(OrderDetail::getOrderId, ordersId);
+        List<OrderDetail> detailList = orderDetailService.list(detailWrapper);
+        List<ShoppingCart> shoppingCarts = new ArrayList<>();
+        for (OrderDetail orderDetail : detailList) {
+            ShoppingCart shoppingCart = new ShoppingCart();
+            BeanUtils.copyProperties(orderDetail,shoppingCart,"id");
+            shoppingCart.setUserId(BaseContext.getCurrentId());
+            shoppingCarts.add(shoppingCart);
+        }
+        shoppingCartService.saveBatch(shoppingCarts);*/
+        return R.success("再来一单成功");
     }
 }
