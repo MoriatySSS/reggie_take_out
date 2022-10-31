@@ -48,6 +48,7 @@
                 </li>
             </ul>
         </div>
+        <!--商品列表-->
         <div class="divMenu">
             <div>
                 <div :key="index" @click="dishDetails(item)" class="divItem" v-for="(item,index) in dishList">
@@ -153,6 +154,7 @@
             </div>
         </div>
     </van-popup>
+    <!--菜品详情页面（口味）-->
     <van-dialog :show-confirm-button="false"
                 class="detailsDialog"
                 ref="detailsDialog"
@@ -173,7 +175,9 @@
                 <span>￥</span><span>{{detailsDialog.item.price / 100}}</span>
             </div>
             <div class="right">
-                <div class="divSubtract" v-if="detailsDialog.item.number > 0">
+                <!--!(item.flavors && item.flavors.length > 0) && item.number > 0-->
+                <div class="divSubtract"
+                     v-if="detailsDialog.item.flavors && detailsDialog.item.flavors.length > 0 && detailsDialog.item.number > 0">
                     <img @click="subtractCart(detailsDialog.item)" src="./images/subtract.png"/>
                 </div>
                 <div class="divDishNum">{{detailsDialog.item.number}}</div>
