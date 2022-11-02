@@ -4,5 +4,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.kmd.reggie.entity.User;
 
 public interface UserService extends IService<User> {
-    public void sendEmail(String toEmail, String subject, String body);
+    public void sendMsg(String toEmail, String subject, String body);
 }

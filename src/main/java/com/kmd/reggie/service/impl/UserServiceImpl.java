@@ -15,9 +15,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private JavaMailSender mailSender;
 
     @Override
-    public void sendEmail(String toEmail, String subject, String body) {
+    public void sendMsg(String toEmail, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("kaomengdiao@gmail.com");
+        message.setFrom("153996496@qq.com");
         message.setTo(toEmail);
         message.setText(body);
         message.setSubject(subject);

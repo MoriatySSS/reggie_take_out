@@ -23,14 +23,15 @@
 <div id="login" v-loading="loading">
     <div class="divHead">登录</div>
     <div class="divContainer">
-        <el-input maxlength='20' placeholder=" 请输入手机号码" v-model="form.phone"/>
+        <el-input maxlength='20' placeholder=" 请输入邮箱" v-model="form.phone"/>
         </el-input>
         <div class="divSplit"></div>
         <el-input maxlength='20' placeholder=" 请输入验证码" v-model="form.code"/>
         </el-input>
-        <span @click='getCode'>获取验证码</span>
+        <span v-if="second > 0">{{second}}s</span>
+        <span @click='getCode' v-if="second <= 0">获取验证码</span>
     </div>
-    <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>
+    <div class="divMsg" v-if="msgFlag">邮箱格式不正确，请重新输入</div>
     <el-button :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin" type="primary">
         登录
     </el-button>
@@ -55,8 +56,16 @@
                     phone: '',
                     code: ''
                 },
+                // 倒计时
+                second: -1,
+                // 判断邮箱格式
                 msgFlag: false,
-                loading: false
+                // 是否登陆中
+                loading: false,
+                // 是否可以发送验证码
+                sending: true,
+                // 倒计时定时任务引用 关闭登录层清除定时任务
+                clearSmsTime: null
             }
         },
         computed: {},
@@ -65,12 +74,20 @@
         mounted() {
         },
         methods: {
-            getCode() {
+            async getCode() {
                 this.form.code = ''
-                const regex = /^(13[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})|(19[0-9]{9})$/;
+                // 手机号验证
+                // const regex = /^(13[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})|(19[0-9]{9})$/;
+                // 改为邮箱验证
+                const regex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
                 if (regex.test(this.form.phone)) {
                     this.msgFlag = false
-                    this.form.code = (Math.random() * 1000000).toFixed(0)
+                    //this.form.code = (Math.random() * 1000000).toFixed(0)
+                    sendMsgApi({phone: this.form.phone})
+                    // 不可重复发送验证码
+                    this.sending = false
+                    // 倒计时效果
+                    this.timeDown()
                 } else {
                     this.msgFlag = true
                 }
@@ -89,8 +106,23 @@
                         this.$notify({type: 'warning', message: res.msg});
                     }
                 } else {
-                    this.$notify({type: 'warning', message: '请输入手机号码'});
+                    this.$notify({type: 'warning', message: '请输入邮箱'});
                 }
+            },
+            timeDown() {
+                if (this.clearSmsTime) {
+                    clearInterval(this.clearSmsTime)
+                }
+                this.second = 60
+                this.clearSmsTime = setInterval(() => {
+                    --this.second
+                    if (this.second < 1) {
+                        clearInterval(this.clearSmsTime)
+                        // 可以重新发送验证码
+                        this.sending = true
+                        this.second = 0
+                    }
+                }, 1000)
             }
         }
     })

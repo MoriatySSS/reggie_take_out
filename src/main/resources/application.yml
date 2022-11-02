@@ -1,5 +1,12 @@
 server:
   port: 8080
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   application:
     name: reggie_take_out
@@ -13,17 +20,11 @@ spring:
     host: 192.168.11.128
     port: 6379
     database: 0
+    connect-timeout: 5000
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: kaomengdiao@gmail.com
-    password: pmslfudakwbnhqmh
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+    host: smtp.qq.com
+    username: 153996496@qq.com
+    password: egvmkimubrqlcbab
     default-encoding: UTF-8
 mybatis-plus:
   configuration:
