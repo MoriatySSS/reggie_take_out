@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 public class UserController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     /**
      * 登录功能（待完善）

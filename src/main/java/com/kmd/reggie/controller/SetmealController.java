@@ -21,11 +21,11 @@ import java.util.List;
 @Slf4j
 public class SetmealController {
     @Autowired
-    SetmealService setmealService;
+    private SetmealService setmealService;
     @Autowired
-    SetmealDishService setmealDishService;
+    private SetmealDishService setmealDishService;
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @PostMapping
     public R<String> save(@RequestBody SetmealDto setmealDto) {

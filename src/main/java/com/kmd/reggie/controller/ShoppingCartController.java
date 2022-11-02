@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class ShoppingCartController {
     @Autowired
-    ShoppingCartService shoppingCartService;
+    private ShoppingCartService shoppingCartService;
 
     @GetMapping("/list")
     public R<List<ShoppingCart>> list() {

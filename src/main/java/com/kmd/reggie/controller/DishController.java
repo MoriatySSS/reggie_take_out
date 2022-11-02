@@ -21,11 +21,11 @@ import java.util.List;
 @RequestMapping("/dish")
 public class DishController {
     @Autowired
-    DishService dishService;
+    private DishService dishService;
     @Autowired
-    DishFlavorService dishFlavorService;
+    private DishFlavorService dishFlavorService;
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @PostMapping
     public R<String> save(@RequestBody DishDto dishDto) {
